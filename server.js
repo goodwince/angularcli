@@ -18,12 +18,12 @@ const forceSSL = function() {
 }
 
 var env = process.env.NODE_ENV || 'dev';
-console.log('booting in %s mode', env);
 
-if (env != 'dev') {
+if (env == 'production') {
     // Instruct the app
     // to use the forceSSL
     // middleware
+    console.log('Booting in % mode forced SSL', env);    
     app.use(forceSSL());
 }
 
@@ -39,25 +39,6 @@ app.get('/*', function(req, res) {
    res.sendFile(path.join(__dirname + '/dist/angular-tour-of-heroes/index.html'));
 }); 
 
-//another way to catch 404s
-app.use(function(req, res, next){
-    res.status(404);
-  
-    // respond with html page
-    if (req.accepts('html')) {
-      res.render('404', { url: req.url });
-      return;
-    }
-  
-    // respond with json
-    if (req.accepts('json')) {
-      res.send({ error: 'Not found' });
-      return;
-    }
-  
-    // default to plain-text. send()
-    res.type('txt').send('Not found');
-});
 
 // Start the app by listening on the default
 // Heroku port
